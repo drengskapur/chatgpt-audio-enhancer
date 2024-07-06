@@ -22,7 +22,10 @@ This userscript adds a convenient control bar to ChatGPT, allowing you to:
    * **Easiest method:** Click this link to open the raw script: [https://raw.githubusercontent.com/drengskapur/chatgpt-audio-enhancer/main/chatgpt-audio-enhancer.user.js](https://raw.githubusercontent.com/drengskapur/chatgpt-audio-enhancer/main/chatgpt-audio-enhancer.user.js)
      - Tampermonkey/Greasemonkey should automatically detect the script and prompt you to install it.
    * **Manual Installation:**
-     - Copy the script's URL: [https://raw.githubusercontent.com/drengskapur/chatgpt-audio-enhancer/main/chatgpt-audio-enhancer.user.js](https://raw.githubusercontent.com/drengskapur/chatgpt-audio-enhancer/main/chatgpt-audio-enhancer.user.js)
+     - Copy the script's URL
+       ```
+       https://raw.githubusercontent.com/drengskapur/chatgpt-audio-enhancer/main/chatgpt-audio-enhancer.user.js
+       ```
      - Open your userscript manager's settings.
      - Look for an option to "Add New Script" or "Import from URL."
      - Paste the copied URL into the field and click "Install."
