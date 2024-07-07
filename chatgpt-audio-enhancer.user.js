@@ -239,7 +239,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10001;
-            background: #333; /* Changed to a solid color */
+            background: #333;
             padding: 20px;
             border-radius: 10px;
             color: white;
