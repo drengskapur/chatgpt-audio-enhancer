@@ -44,7 +44,7 @@ Once installed and enabled, the script will automatically add audio controls to 
 
 ### Features
 
-* **Intercepts audio synthesis requests:** Captures synthesized audio data and plays it back using HTML5 audio.
+* **Intercepts audio synthesis requests:** Captures synthesized Read Aloud audio data and plays it back using HTML5 audio.
 * **Customizable controls:** Provides a floating control bar with playback controls, seeking, and download options.
 * **Repeat functionality:** Allows users to loop audio playback.
 * **Download option:** Enables downloading audio responses as AAC files.
