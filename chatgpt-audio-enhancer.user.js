@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         ChatGPT Audio Enhancer
 // @namespace    com.drengskapur.chatgpt
-// @version      1.0.2
-// @description  Enhance ChatGPT with audio playback controls and download functionality.
+// @version      1.0.8
+// @description  Enhance ChatGPT with audio playback controls and download functionality, including auto-download feature.
 // @author       drengskapur
 // @match        *://chatgpt.com/*
 // @match        *://chat.openai.com/*
@@ -23,8 +23,9 @@
     let seekBar; // Seek bar
     let audioBlob = null; // Audio data (Blob)
     let currentTimeText; // Current time display
-    let repeatBtn; // Repeat button
+    let settingsBtn; // Settings button
     let isRepeating = localStorage.getItem('isRepeating') === 'true'; // Is audio repeating?
+    let isAutoDownload = localStorage.getItem('isAutoDownload') === 'true'; // Is auto-download enabled?
 
     /**
      * Downloads a Blob as a file.
@@ -69,6 +70,9 @@
             .then(() => {
                 playPauseBtn.innerHTML = '⏸️';
                 playPauseBtn.title = 'Pause';
+                if (isAutoDownload) {
+                    download();
+                }
             });
 
         audio.addEventListener('timeupdate', updateSeekBar);
@@ -126,21 +130,19 @@
             align-items: center;
             opacity: 1;
             transition: opacity 0.5s ease;
-            background: transparent;
+            background: rgba(0, 0, 0, 0);
             padding: 5px;
             border-radius: 5px;
+            color: white;
         `;
 
         const buttonContainer = document.createElement('div');
         buttonContainer.style.display = 'flex';
 
-        buttonContainer.appendChild(createButton('⏮️', 'Restart', restartAudio));
         buttonContainer.appendChild(createButton('⏪', 'Rewind 10 seconds', rewind));
         playPauseBtn = createButton('▶️', 'Play', togglePlayPause);
         buttonContainer.appendChild(playPauseBtn);
         buttonContainer.appendChild(createButton('⏩', 'Forward 10 seconds', fastForward));
-        repeatBtn = createButton(isRepeating ? '🟦' : '🔁', isRepeating ? 'No Repeat' : 'Repeat', toggleRepeat);
-        buttonContainer.appendChild(repeatBtn);
 
         seekBar = document.createElement('input');
         seekBar.type = 'range';
@@ -154,11 +156,13 @@
         currentTimeText.textContent = '0:00';
 
         const downloadButton = createButton('⬇️', 'Download', download);
+        settingsBtn = createButton('⚙️', 'Settings', openSettingsModal);
 
         controlsDiv.appendChild(buttonContainer);
         controlsDiv.appendChild(seekBar);
         controlsDiv.appendChild(currentTimeText);
         controlsDiv.appendChild(downloadButton);
+        controlsDiv.appendChild(settingsBtn);
 
         document.body.appendChild(controlsDiv);
         setControlsState(false);
@@ -227,11 +231,57 @@
         audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
     }
 
-    function toggleRepeat() {
-        isRepeating = !isRepeating;
-        repeatBtn.innerHTML = isRepeating ? '🟦' : '🔁';
-        repeatBtn.title = isRepeating ? 'No Repeat' : 'Repeat';
-        localStorage.setItem('isRepeating', isRepeating);
+    function openSettingsModal() {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: #333; /* Changed to a solid color */
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        `;
+
+        const modalContent = `
+            <h2>Settings</h2>
+            <label style="display: block; margin-bottom: 10px;">
+                <input type="checkbox" id="autoDownloadCheckbox" ${isAutoDownload ? 'checked' : ''}>
+                Auto-Download
+            </label>
+            <label style="display: block; margin-bottom: 20px;">
+                <input type="checkbox" id="repeatCheckbox" ${isRepeating ? 'checked' : ''}>
+                Repeat
+            </label>
+            <button id="closeSettingsBtn" style="
+                cursor: pointer;
+                background: #555;
+                border: none;
+                font-size: 16px;
+                padding: 10px 20px;
+                border-radius: 5px;
+                color: white;
+            ">Close</button>
+        `;
+
+        modal.innerHTML = modalContent;
+        document.body.appendChild(modal);
+
+        document.getElementById('autoDownloadCheckbox').addEventListener('change', (e) => {
+            isAutoDownload = e.target.checked;
+            localStorage.setItem('isAutoDownload', isAutoDownload);
+        });
+
+        document.getElementById('repeatCheckbox').addEventListener('change', (e) => {
+            isRepeating = e.target.checked;
+            localStorage.setItem('isRepeating', isRepeating);
+        });
+
+        document.getElementById('closeSettingsBtn').addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
     }
 
     /**
