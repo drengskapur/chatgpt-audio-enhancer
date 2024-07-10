@@ -38,7 +38,6 @@ Once installed and enabled, the script will automatically add audio controls to 
 
 * **Play/Pause:** Click the ▶️/⏸️ button.
 * **Rewind/Fast Forward:** Click the ⏪/⏩ buttons.
-* **Restart:** Click the ⏮️ button.
 * **Repeat:** Click the 🔁/🟦 button.
 * **Download:** Click the ⬇️ button.
 
